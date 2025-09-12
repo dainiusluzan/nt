@@ -209,6 +209,13 @@
             font-weight: bold;
             cursor: pointer;
             z-index: 2001;
+            padding: 10px;
+            user-select: none;
+            transition: color 0.2s ease;
+            pointer-events: auto;
+            display: block;
+            width: auto;
+            height: auto;
         }
         
         .lightbox-close:hover {
@@ -649,24 +656,39 @@
             }
         }
         
-        // Lightbox event listeners - wait for DOM to be ready
-        document.addEventListener('DOMContentLoaded', function() {
-            const lightboxClose = document.getElementById('lightbox-close');
-            const lightboxPrev = document.getElementById('lightbox-prev');
-            const lightboxNext = document.getElementById('lightbox-next');
-            const lightbox = document.getElementById('lightbox');
+        // Lightbox event listeners using event delegation
+        document.addEventListener('click', function(e) {
+            console.log('Click detected on:', e.target);
+            console.log('Target classes:', e.target.classList);
+            console.log('Target id:', e.target.id);
             
-            if (lightboxClose) lightboxClose.onclick = closeLightbox;
-            if (lightboxPrev) lightboxPrev.onclick = prevPhoto;
-            if (lightboxNext) lightboxNext.onclick = nextPhoto;
-            
-            // Close lightbox when clicking outside the image
-            if (lightbox) {
-                lightbox.onclick = function(e) {
-                    if (e.target === lightbox) {
-                        closeLightbox();
-                    }
-                };
+            // Close button
+            if (e.target && e.target.classList.contains('lightbox-close')) {
+                console.log('Close button clicked!');
+                e.preventDefault();
+                e.stopPropagation();
+                closeLightbox();
+            }
+            // Previous button
+            else if (e.target && e.target.id === 'lightbox-prev') {
+                console.log('Prev button clicked!');
+                e.preventDefault();
+                e.stopPropagation();
+                prevPhoto();
+            }
+            // Next button
+            else if (e.target && e.target.id === 'lightbox-next') {
+                console.log('Next button clicked!');
+                e.preventDefault();
+                e.stopPropagation();
+                nextPhoto();
+            }
+            // Click outside image to close
+            else if (e.target && e.target.id === 'lightbox') {
+                console.log('Lightbox background clicked!');
+                e.preventDefault();
+                e.stopPropagation();
+                closeLightbox();
             }
         });
         
