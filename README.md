@@ -75,7 +75,6 @@ The application uses a single `index.html` file containing:
 ```
 interactive-map-gallery/
 ├── index.html              # Complete application (HTML + CSS + JS + Data)
-├── locations.json          # Reference data file (not used - data is embedded)
 └── ai_docs/               # Documentation
     ├── requirements.md
     ├── project-management-report.md
