@@ -591,15 +591,22 @@
             const lightbox = document.getElementById('lightbox');
             const lightboxImage = document.getElementById('lightbox-image');
             
-            lightboxImage.src = currentPhotos[currentPhotoIndex];
-            lightbox.style.display = 'block';
+            if (lightboxImage) {
+                lightboxImage.src = currentPhotos[currentPhotoIndex];
+            }
+            if (lightbox) {
+                lightbox.style.display = 'block';
+            }
             
             // Update navigation visibility
             updateLightboxNavigation();
         }
         
         function closeLightbox() {
-            document.getElementById('lightbox').style.display = 'none';
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox) {
+                lightbox.style.display = 'none';
+            }
         }
         
         function nextPhoto() {
@@ -608,7 +615,10 @@
             } else {
                 currentPhotoIndex = 0; // Loop to first
             }
-            document.getElementById('lightbox-image').src = currentPhotos[currentPhotoIndex];
+            const lightboxImage = document.getElementById('lightbox-image');
+            if (lightboxImage) {
+                lightboxImage.src = currentPhotos[currentPhotoIndex];
+            }
             updateLightboxNavigation();
         }
         
@@ -618,7 +628,10 @@
             } else {
                 currentPhotoIndex = currentPhotos.length - 1; // Loop to last
             }
-            document.getElementById('lightbox-image').src = currentPhotos[currentPhotoIndex];
+            const lightboxImage = document.getElementById('lightbox-image');
+            if (lightboxImage) {
+                lightboxImage.src = currentPhotos[currentPhotoIndex];
+            }
             updateLightboxNavigation();
         }
         
@@ -628,29 +641,39 @@
             
             // Show/hide navigation based on number of photos
             if (currentPhotos.length <= 1) {
-                prevBtn.style.display = 'none';
-                nextBtn.style.display = 'none';
+                if (prevBtn) prevBtn.style.display = 'none';
+                if (nextBtn) nextBtn.style.display = 'none';
             } else {
-                prevBtn.style.display = 'block';
-                nextBtn.style.display = 'block';
+                if (prevBtn) prevBtn.style.display = 'block';
+                if (nextBtn) nextBtn.style.display = 'block';
             }
         }
         
-        // Lightbox event listeners
-        document.getElementById('lightbox-close').onclick = closeLightbox;
-        document.getElementById('lightbox-prev').onclick = prevPhoto;
-        document.getElementById('lightbox-next').onclick = nextPhoto;
-        
-        // Close lightbox when clicking outside the image
-        document.getElementById('lightbox').onclick = function(e) {
-            if (e.target === document.getElementById('lightbox')) {
-                closeLightbox();
+        // Lightbox event listeners - wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            const lightboxClose = document.getElementById('lightbox-close');
+            const lightboxPrev = document.getElementById('lightbox-prev');
+            const lightboxNext = document.getElementById('lightbox-next');
+            const lightbox = document.getElementById('lightbox');
+            
+            if (lightboxClose) lightboxClose.onclick = closeLightbox;
+            if (lightboxPrev) lightboxPrev.onclick = prevPhoto;
+            if (lightboxNext) lightboxNext.onclick = nextPhoto;
+            
+            // Close lightbox when clicking outside the image
+            if (lightbox) {
+                lightbox.onclick = function(e) {
+                    if (e.target === lightbox) {
+                        closeLightbox();
+                    }
+                };
             }
-        };
+        });
         
         // Keyboard navigation for lightbox
         document.addEventListener('keydown', function(e) {
-            if (document.getElementById('lightbox').style.display === 'block') {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox && lightbox.style.display === 'block') {
                 if (e.key === 'Escape') {
                     closeLightbox();
                 } else if (e.key === 'ArrowLeft') {
