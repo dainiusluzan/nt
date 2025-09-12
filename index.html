@@ -39,14 +39,16 @@
         
         .modal-content {
             background-color: #fefefe;
-            margin: 5% auto;
+            margin: 2% auto;
             padding: 20px;
             border-radius: 10px;
-            width: 90%;
-            max-width: 500px;
+            width: 95%;
+            max-width: 800px;
             position: relative;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             animation: modalSlideIn 0.3s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         @keyframes modalSlideIn {
@@ -110,6 +112,138 @@
             transform: scale(1.05);
         }
         
+        /* Photo Gallery Styles */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.2s ease;
+        }
+        
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.1);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .gallery-icon {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        /* Lightbox Styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            animation: lightboxFadeIn 0.3s ease-out;
+        }
+        
+        .lightbox-content {
+            position: relative;
+            margin: auto;
+            padding: 20px;
+            width: 90%;
+            height: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2001;
+        }
+        
+        .lightbox-close:hover {
+            color: #bbb;
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #f1f1f1;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 10px;
+            user-select: none;
+        }
+        
+        .lightbox-prev {
+            left: 20px;
+        }
+        
+        .lightbox-next {
+            right: 20px;
+        }
+        
+        .lightbox-nav:hover {
+            color: #bbb;
+        }
+        
+        @keyframes lightboxFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
         /* Error Message Styles */
         #error-container {
             display: none;
@@ -139,7 +273,7 @@
         /* Responsive Design */
         @media (max-width: 768px) {
             .modal-content {
-                margin: 10% auto;
+                margin: 5% auto;
                 width: 95%;
                 padding: 15px;
             }
@@ -152,8 +286,22 @@
                 font-size: 14px;
             }
             
-            .cover-image {
-                max-width: 100%;
+            .photo-gallery {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 8px;
+            }
+            
+            .lightbox-nav {
+                font-size: 24px;
+                padding: 5px;
+            }
+            
+            .lightbox-prev {
+                left: 10px;
+            }
+            
+            .lightbox-next {
+                right: 10px;
             }
         }
         
@@ -168,6 +316,26 @@
                 font-size: 13px;
             }
             
+            .photo-gallery {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 6px;
+            }
+            
+            .gallery-icon {
+                font-size: 18px;
+            }
+            
+            .lightbox-nav {
+                font-size: 20px;
+                padding: 3px;
+            }
+            
+            .lightbox-close {
+                font-size: 30px;
+                top: 10px;
+                right: 20px;
+            }
+            
             #error-container {
                 padding: 20px;
                 margin: 0 10px;
@@ -180,8 +348,29 @@
                 transform: none;
             }
             
+            .gallery-item:hover {
+                transform: none;
+                box-shadow: none;
+            }
+            
+            .gallery-item:hover .gallery-image {
+                transform: none;
+            }
+            
+            .gallery-item:hover .gallery-overlay {
+                opacity: 0;
+            }
+            
             .modal-close:hover {
                 color: #aaa;
+            }
+            
+            .lightbox-nav:hover {
+                color: #f1f1f1;
+            }
+            
+            .lightbox-close:hover {
+                color: #f1f1f1;
             }
         }
     </style>
@@ -195,6 +384,16 @@
         <div class="modal-content">
             <span class="modal-close">&times;</span>
             <div id="modal-body"></div>
+        </div>
+    </div>
+    
+    <!-- Lightbox for Gallery Images -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close">&times;</span>
+            <div class="lightbox-nav lightbox-prev" id="lightbox-prev">&#10094;</div>
+            <div class="lightbox-nav lightbox-next" id="lightbox-next">&#10095;</div>
+            <img id="lightbox-image" class="lightbox-image" src="" alt="">
         </div>
     </div>
     
@@ -219,13 +418,28 @@
                 "coordinates": "54°59'08.0\"N 24°00'01.7\"E",
                 "text": "Yra kilnojamas namelis grubiai 3x10. kaina: 17K€",
                 "albumUrl": "https://photos.app.goo.gl/FkTttn5rsAi8qW3fA",
-                "coverImageUrl": "REPLACE_WITH_GOOGLE_PHOTOS_COVER_URL_1"
+                "coverImageUrl": "REPLACE_WITH_GOOGLE_PHOTOS_COVER_URL_1",
+                "photos": [
+                    "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=400&fit=crop",
+                    "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=400&fit=crop",
+                    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=400&fit=crop",
+                    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=400&fit=crop",
+                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=400&fit=crop",
+                    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=400&fit=crop"
+                ]
             },
             {
                 "coordinates": "54°59'10.8\"N 23°59'22.1\"E",
                 "text": "Su pratekanciu vandeniu. Reikia fantazijos. 11K€",
                 "albumUrl": "https://photos.app.goo.gl/axQsNwmvbXoVhcan7",
-                "coverImageUrl": "REPLACE_WITH_GOOGLE_PHOTOS_COVER_URL_2"
+                "coverImageUrl": "REPLACE_WITH_GOOGLE_PHOTOS_COVER_URL_2",
+                "photos": [
+                    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=400&h=400&fit=crop",
+                    "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&h=400&fit=crop",
+                    "https://images.unsplash.com/photo-1600585152915-d208bec867a1?w=400&h=400&fit=crop",
+                    "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400&h=400&fit=crop",
+                    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=400&h=400&fit=crop"
+                ]
             }
         ];
         
@@ -238,11 +452,16 @@
             
             // Validate each location
             locations.forEach((location, index) => {
-                const required = ['coordinates', 'text', 'albumUrl', 'coverImageUrl'];
+                const required = ['coordinates', 'text', 'albumUrl', 'coverImageUrl', 'photos'];
                 for (const field of required) {
                     if (!(field in location)) {
                         throw new Error(`Missing field '${field}' in location ${index + 1}`);
                     }
+                }
+                
+                // Validate photos array
+                if (!Array.isArray(location.photos) || location.photos.length === 0) {
+                    throw new Error(`Invalid photos array in location ${index + 1}`);
                 }
                 
                 // Validate coordinates format and convert to decimal
@@ -318,12 +537,28 @@
         // Step 3: Modal Functions
         function showModal(location) {
             const modalBody = document.getElementById('modal-body');
+            
+            // Create photo gallery HTML
+            const galleryHTML = location.photos.map((photo, index) => `
+                <div class="gallery-item" onclick="openLightbox(${JSON.stringify(location.photos).replace(/"/g, '&quot;')}, ${index})">
+                    <img src="${photo}" alt="Gallery Image ${index + 1}" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <div class="gallery-icon">🔍</div>
+                    </div>
+                </div>
+            `).join('');
+            
             modalBody.innerHTML = `
                 <div class="location-text">${location.text}</div>
                 <div class="coordinates">${location.coordinates}</div>
-                <a href="${location.albumUrl}" target="_blank">
-                    <img src="${location.coverImageUrl}" alt="Gallery Cover" class="cover-image">
-                </a>
+                <div class="photo-gallery">
+                    ${galleryHTML}
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="${location.albumUrl}" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">
+                        📸 View Full Album
+                    </a>
+                </div>
             `;
             document.getElementById('modal').style.display = 'block';
         }
@@ -343,6 +578,86 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && document.getElementById('modal').style.display === 'block') {
                 document.getElementById('modal').style.display = 'none';
+            }
+        });
+        
+        // Lightbox functionality
+        let currentPhotos = [];
+        let currentPhotoIndex = 0;
+        
+        function openLightbox(photos, index) {
+            currentPhotos = photos;
+            currentPhotoIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            
+            lightboxImage.src = currentPhotos[currentPhotoIndex];
+            lightbox.style.display = 'block';
+            
+            // Update navigation visibility
+            updateLightboxNavigation();
+        }
+        
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+        
+        function nextPhoto() {
+            if (currentPhotoIndex < currentPhotos.length - 1) {
+                currentPhotoIndex++;
+            } else {
+                currentPhotoIndex = 0; // Loop to first
+            }
+            document.getElementById('lightbox-image').src = currentPhotos[currentPhotoIndex];
+            updateLightboxNavigation();
+        }
+        
+        function prevPhoto() {
+            if (currentPhotoIndex > 0) {
+                currentPhotoIndex--;
+            } else {
+                currentPhotoIndex = currentPhotos.length - 1; // Loop to last
+            }
+            document.getElementById('lightbox-image').src = currentPhotos[currentPhotoIndex];
+            updateLightboxNavigation();
+        }
+        
+        function updateLightboxNavigation() {
+            const prevBtn = document.getElementById('lightbox-prev');
+            const nextBtn = document.getElementById('lightbox-next');
+            
+            // Show/hide navigation based on number of photos
+            if (currentPhotos.length <= 1) {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+            } else {
+                prevBtn.style.display = 'block';
+                nextBtn.style.display = 'block';
+            }
+        }
+        
+        // Lightbox event listeners
+        document.getElementById('lightbox-close').onclick = closeLightbox;
+        document.getElementById('lightbox-prev').onclick = prevPhoto;
+        document.getElementById('lightbox-next').onclick = nextPhoto;
+        
+        // Close lightbox when clicking outside the image
+        document.getElementById('lightbox').onclick = function(e) {
+            if (e.target === document.getElementById('lightbox')) {
+                closeLightbox();
+            }
+        };
+        
+        // Keyboard navigation for lightbox
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('lightbox').style.display === 'block') {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                } else if (e.key === 'ArrowLeft') {
+                    prevPhoto();
+                } else if (e.key === 'ArrowRight') {
+                    nextPhoto();
+                }
             }
         });
         
