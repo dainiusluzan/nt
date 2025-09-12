@@ -1,0 +1,37 @@
+[
+  {
+    "latitude": 54.8985,
+    "longitude": 23.9036,
+    "text": "Photos from our trip to Kaunas Old Town. Beautiful architecture and historic charm.",
+    "albumUrl": "https://photos.app.goo.gl/your-album-link-1",
+    "coverImageUrl": "https://via.placeholder.com/400x300/4CAF50/white?text=Kaunas+Old+Town"
+  },
+  {
+    "latitude": 40.7128,
+    "longitude": -74.0060,
+    "text": "New York City adventures! The city that never sleeps.",
+    "albumUrl": "https://photos.app.goo.gl/your-album-link-2",
+    "coverImageUrl": "https://via.placeholder.com/400x300/2196F3/white?text=New+York+City"
+  },
+  {
+    "latitude": 48.8566,
+    "longitude": 2.3522,
+    "text": "Paris memories - the city of light and love.",
+    "albumUrl": "https://photos.app.goo.gl/your-album-link-3",
+    "coverImageUrl": "https://via.placeholder.com/400x300/FF9800/white?text=Paris"
+  },
+  {
+    "latitude": 35.6762,
+    "longitude": 139.6503,
+    "text": "Tokyo exploration - a perfect blend of tradition and modernity.",
+    "albumUrl": "https://photos.app.goo.gl/your-album-link-4",
+    "coverImageUrl": "https://via.placeholder.com/400x300/E91E63/white?text=Tokyo"
+  },
+  {
+    "latitude": -33.8688,
+    "longitude": 151.2093,
+    "text": "Sydney harbor views and the iconic Opera House.",
+    "albumUrl": "https://photos.app.goo.gl/your-album-link-5",
+    "coverImageUrl": "https://via.placeholder.com/400x300/9C27B0/white?text=Sydney"
+  }
+]

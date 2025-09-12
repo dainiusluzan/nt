@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Map Gallery</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <style>
+        /* Reset and Base Styles */
+        body { 
+            margin: 0; 
+            font-family: sans-serif; 
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        #map { 
+            height: 100vh; 
+            width: 100%; 
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+        }
+        
+        .modal-close:hover {
+            color: #000;
+        }
+        
+        #modal-body {
+            margin: 20px 0;
+        }
+        
+        .location-text {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .coordinates {
+            font-size: 14px;
+            color: #666;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 20px;
+            padding: 8px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .cover-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .cover-image:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Error Message Styles */
+        #error-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ff6b6b;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 1001;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        #error-container h2 {
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+        
+        #error-container p {
+            margin: 0;
+            font-size: 16px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+                padding: 15px;
+            }
+            
+            .modal-close {
+                font-size: 24px;
+            }
+            
+            .location-text {
+                font-size: 14px;
+            }
+            
+            .cover-image {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .modal-content {
+                margin: 2% auto;
+                width: 98%;
+                padding: 10px;
+            }
+            
+            .location-text {
+                font-size: 13px;
+            }
+            
+            #error-container {
+                padding: 20px;
+                margin: 0 10px;
+            }
+        }
+        
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .cover-image:hover {
+                transform: none;
+            }
+            
+            .modal-close:hover {
+                color: #aaa;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Map Container -->
+    <div id="map"></div>
+    
+    <!-- Modal Structure -->
+    <div id="modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+    
+    <!-- Error Message -->
+    <div id="error-container">
+        <h2>ask Dainius</h2>
+        <p id="error-details"></p>
+    </div>
+    
+    <script>
+        // Step 1: Initialize the map (will be updated after data loads)
+        const map = L.map('map').setView([0, 0], 2); // Initial world view
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Step 2: Data Loading and Marker Placement
+        // Embedded data - no server needed!
+        const locations = [
+            {
+                "coordinates": "54°59'08.0\"N 24°00'01.7\"E",
+                "text": "Yra kilnojamas namelis grubiai 3x10. kaina: 17K€",
+                "albumUrl": "https://photos.app.goo.gl/FkTttn5rsAi8qW3fA",
+                "coverImageUrl": "REPLACE_WITH_GOOGLE_PHOTOS_COVER_URL_1"
+            },
+            {
+                "coordinates": "54°59'10.8\"N 23°59'22.1\"E",
+                "text": "Su pratekanciu vandeniu. Reikia fantazijos. 11K€",
+                "albumUrl": "https://photos.app.goo.gl/axQsNwmvbXoVhcan7",
+                "coverImageUrl": "REPLACE_WITH_GOOGLE_PHOTOS_COVER_URL_2"
+            }
+        ];
+        
+        // Process the embedded data
+        try {
+            // Validate data - all or nothing approach
+            if (!Array.isArray(locations) || locations.length === 0 || locations.length > 10) {
+                throw new Error('Invalid data: must be array with 1-10 items');
+            }
+            
+            // Validate each location
+            locations.forEach((location, index) => {
+                const required = ['coordinates', 'text', 'albumUrl', 'coverImageUrl'];
+                for (const field of required) {
+                    if (!(field in location)) {
+                        throw new Error(`Missing field '${field}' in location ${index + 1}`);
+                    }
+                }
+                
+                // Validate coordinates format and convert to decimal
+                try {
+                    const coords = dmsToDecimal(location.coordinates);
+                    if (coords.latitude < -90 || coords.latitude > 90 || 
+                        coords.longitude < -180 || coords.longitude > 180) {
+                        throw new Error(`Invalid coordinates in location ${index + 1}`);
+                    }
+                    // Store decimal coordinates for marker placement
+                    location.latitude = coords.latitude;
+                    location.longitude = coords.longitude;
+                } catch (error) {
+                    throw new Error(`Invalid coordinates format in location ${index + 1}: ${error.message}`);
+                }
+            });
+            
+            // Add markers for valid data
+            locations.forEach(location => {
+                L.marker([location.latitude, location.longitude])
+                    .addTo(map)
+                    .on('click', () => {
+                        showModal(location);
+                    });
+            });
+            
+            // Set map focus to first location
+            if (locations.length > 0) {
+                map.setView([locations[0].latitude, locations[0].longitude], 13);
+            }
+        } catch (error) {
+            displayError(error);
+        }
+        
+        // Helper function to convert DMS format to decimal degrees
+        function dmsToDecimal(dmsString) {
+            // Parse DMS format like "54°53'54.6\"N 23°54'12.9\"E"
+            const parts = dmsString.split(' ');
+            if (parts.length !== 2) {
+                throw new Error('Invalid coordinates format');
+            }
+            
+            const latDMS = parts[0];
+            const lngDMS = parts[1];
+            
+            const lat = parseDMS(latDMS);
+            const lng = parseDMS(lngDMS);
+            
+            return { latitude: lat, longitude: lng };
+        }
+        
+        function parseDMS(dms) {
+            // Parse single coordinate like "54°53'54.6\"N"
+            const match = dms.match(/(\d+)°(\d+)'([\d.]+)"([NSEW])/);
+            if (!match) {
+                throw new Error('Invalid DMS format: ' + dms);
+            }
+            
+            const degrees = parseInt(match[1]);
+            const minutes = parseInt(match[2]);
+            const seconds = parseFloat(match[3]);
+            const direction = match[4];
+            
+            let decimal = degrees + minutes / 60 + seconds / 3600;
+            
+            if (direction === 'S' || direction === 'W') {
+                decimal = -decimal;
+            }
+            
+            return decimal;
+        }
+        
+        // Step 3: Modal Functions
+        function showModal(location) {
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = `
+                <div class="location-text">${location.text}</div>
+                <div class="coordinates">${location.coordinates}</div>
+                <a href="${location.albumUrl}" target="_blank">
+                    <img src="${location.coverImageUrl}" alt="Gallery Cover" class="cover-image">
+                </a>
+            `;
+            document.getElementById('modal').style.display = 'block';
+        }
+        
+        // Modal close functionality
+        document.querySelector('.modal-close').onclick = function() {
+            document.getElementById('modal').style.display = 'none';
+        };
+        
+        document.getElementById('modal').onclick = function(e) {
+            if (e.target === document.getElementById('modal')) {
+                document.getElementById('modal').style.display = 'none';
+            }
+        };
+        
+        // Escape key to close modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('modal').style.display === 'block') {
+                document.getElementById('modal').style.display = 'none';
+            }
+        });
+        
+        // Step 4: Error Handling
+        function displayError(error) {
+            document.getElementById('map').style.display = 'none';
+            document.getElementById('error-details').textContent = error.message || error;
+            document.getElementById('error-container').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
