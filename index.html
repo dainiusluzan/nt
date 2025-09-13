@@ -541,17 +541,22 @@
             });
             
             // Add markers for valid data
+            const markers = [];
             locations.forEach(location => {
-                L.marker([location.latitude, location.longitude])
+                const marker = L.marker([location.latitude, location.longitude])
                     .addTo(map)
                     .on('click', () => {
                         showModal(location);
                     });
+                markers.push(marker);
             });
             
-            // Set map focus to first location
-            if (locations.length > 0) {
-                map.setView([locations[0].latitude, locations[0].longitude], 13);
+            // Fit map to show all markers with padding and appropriate zoom
+            if (markers.length > 0) {
+                const group = new L.featureGroup(markers);
+                map.fitBounds(group.getBounds().pad(0.1), {
+                    maxZoom: 15  // More zoomed in than before
+                });
             }
         } catch (error) {
             displayError(error);
