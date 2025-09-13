@@ -169,6 +169,50 @@
             font-weight: bold;
         }
         
+        /* Action Buttons Styles */
+        .action-buttons {
+            text-align: center;
+            margin-top: 15px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .action-button {
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .album-button {
+            color: #007bff;
+            border: 2px solid #007bff;
+        }
+        
+        .album-button:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .maps-button {
+            color: #34a853;
+            border: 2px solid #34a853;
+        }
+        
+        .maps-button:hover {
+            background-color: #34a853;
+            color: white;
+        }
+        
         /* Lightbox Styles */
         .lightbox {
             display: none;
@@ -298,6 +342,16 @@
                 gap: 8px;
             }
             
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .action-button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
             .lightbox-nav {
                 font-size: 24px;
                 padding: 5px;
@@ -326,6 +380,16 @@
             .photo-gallery {
                 grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
                 gap: 6px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .action-button {
+                padding: 8px 16px;
+                font-size: 13px;
             }
             
             .gallery-icon {
@@ -426,6 +490,7 @@
                 "text": "Yra kilnojamas namelis grubiai 3x10. kaina: 17K€",
                 "albumUrl": "https://photos.app.goo.gl/FkTttn5rsAi8qW3fA",
                 "coverImageUrl": "https://photos.app.goo.gl/FkTttn5rsAi8qW3fA",
+                "googleMapsUrl": "https://www.google.com/maps?q=54.985556,24.000472",
                 "photos": [
                     "https://photos.app.goo.gl/FkTttn5rsAi8qW3fA"
                 ]
@@ -435,6 +500,7 @@
                 "text": "Siaurine 78. Su pratekanciu vandeniu. Reikia fantazijos. 11K€",
                 "albumUrl": "https://photos.app.goo.gl/QWTyHCDgDZngxgkJ7",
                 "coverImageUrl": "https://photos.app.goo.gl/QWTyHCDgDZngxgkJ7",
+                "googleMapsUrl": "https://www.google.com/maps?q=54.986333,23.989472",
                 "photos": [
                     "https://photos.app.goo.gl/QWTyHCDgDZngxgkJ7"
                 ]
@@ -444,6 +510,7 @@
                 "text": "Nevisai aisku ar parduoda. Yra miesto dujos, vanduo, kanalizacija",
                 "albumUrl": "https://photos.app.goo.gl/zBHYuC4uNXmu2JpW6",
                 "coverImageUrl": "https://photos.app.goo.gl/zBHYuC4uNXmu2JpW6",
+                "googleMapsUrl": "https://www.google.com/maps?q=54.983556,24.000806",
                 "photos": [
                     "https://photos.app.goo.gl/zBHYuC4uNXmu2JpW6"
                 ]
@@ -453,6 +520,7 @@
                 "text": "Obuoliu 11. Prie pat prudo. Senas murinis namas, restauruotas, bet prastom medziagom",
                 "albumUrl": "https://photos.app.goo.gl/LTyuKEFZyGRiCsc5A",
                 "coverImageUrl": "https://photos.app.goo.gl/LTyuKEFZyGRiCsc5A",
+                "googleMapsUrl": "https://www.google.com/maps?q=54.982694,23.987972",
                 "photos": [
                     "https://photos.app.goo.gl/whfrDruhymqzxXws8"
                 ]
@@ -462,6 +530,7 @@
                 "text": "20K per viena sklypa nuo prudo. Stiprus nuolydis",
                 "albumUrl": "https://photos.app.goo.gl/it3Are9Y9vCmK3EU7",
                 "coverImageUrl": "https://photos.app.goo.gl/it3Are9Y9vCmK3EU7",
+                "googleMapsUrl": "https://www.google.com/maps?q=54.981750,23.989361",
                 "photos": [
                     "https://photos.app.goo.gl/it3Are9Y9vCmK3EU7"
                 ]
@@ -471,6 +540,7 @@
                 "text": "50K us du sklypus po 6 Prie pagrindinio kelio. Yra dujos, vanduo, kanalizacija",
                 "albumUrl": "https://photos.app.goo.gl/K6GjvY6G8cW6zxEK9",
                 "coverImageUrl": "https://photos.app.goo.gl/K6GjvY6G8cW6zxEK9",
+                "googleMapsUrl": "https://www.google.com/maps?q=54.984778,24.005333",
                 "photos": [
                     "https://photos.app.goo.gl/K6GjvY6G8cW6zxEK9"
                 ]
@@ -486,7 +556,7 @@
             
             // Validate each location
             locations.forEach((location, index) => {
-                const required = ['coordinates', 'text', 'albumUrl', 'coverImageUrl', 'photos'];
+                const required = ['coordinates', 'text', 'albumUrl', 'coverImageUrl', 'googleMapsUrl', 'photos'];
                 for (const field of required) {
                     if (!(field in location)) {
                         throw new Error(`Missing field '${field}' in location ${index + 1}`);
@@ -588,9 +658,12 @@
                 <div class="photo-gallery">
                     ${galleryHTML}
                 </div>
-                <div style="text-align: center; margin-top: 15px;">
-                    <a href="${location.albumUrl}" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">
+                <div class="action-buttons">
+                    <a href="${location.albumUrl}" target="_blank" class="action-button album-button">
                         📸 View Full Album
+                    </a>
+                    <a href="${location.googleMapsUrl}" target="_blank" class="action-button maps-button">
+                        🗺️ Open in Google Maps
                     </a>
                 </div>
             `;
