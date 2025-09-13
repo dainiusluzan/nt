@@ -217,6 +217,50 @@
             font-size: 16px;
         }
         
+        /* Gallery Styles */
+        #gallery-container {
+            margin: 20px 0;
+        }
+        
+        #modal-main-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: opacity 0.3s ease;
+        }
+        
+        #modal-thumbnails {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            opacity: 0.8;
+        }
+        
+        .thumbnail:hover {
+            border-color: #007bff;
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .thumbnail.active {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+            opacity: 1;
+        }
+        
         
         /* Error Message Styles */
         #error-container {
@@ -288,6 +332,11 @@
                 font-size: 13px;
             }
             
+            .thumbnail {
+                width: 70px;
+                height: 70px;
+            }
+            
         }
         
         @media (max-width: 480px) {
@@ -331,6 +380,15 @@
             .preview-button {
                 padding: 8px 16px;
                 font-size: 12px;
+            }
+            
+            .thumbnail {
+                width: 60px;
+                height: 60px;
+            }
+            
+            #modal-thumbnails {
+                gap: 6px;
             }
             
             
@@ -389,43 +447,74 @@
                 "coordinates": "54°59'08.0\"N 24°00'01.7\"E",
                 "text": "Yra kilnojamas namelis grubiai 3x10. kaina: 17K€",
                 "albumUrl": "https://photos.app.goo.gl/FkTttn5rsAi8qW3fA",
-                "coverImageUrl": "https://photos.app.goo.gl/FkTttn5rsAi8qW3fA",
-                "googleMapsUrl": "https://www.google.com/maps?q=54.985556,24.000472"
+                "googleMapsUrl": "https://www.google.com/maps?q=54.985556,24.000472",
+                "photos": [
+                    "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop"
+                ]
             },
             {
                 "coordinates": "54°59'10.8\"N 23°59'22.1\"E",
                 "text": "Siaurine 78. Su pratekanciu vandeniu. Reikia fantazijos. 11K€",
                 "albumUrl": "https://photos.app.goo.gl/QWTyHCDgDZngxgkJ7",
-                "coverImageUrl": "https://photos.app.goo.gl/QWTyHCDgDZngxgkJ7",
-                "googleMapsUrl": "https://www.google.com/maps?q=54.986333,23.989472"
+                "googleMapsUrl": "https://www.google.com/maps?q=54.986333,23.989472",
+                "photos": [
+                    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600585152915-d208bec867a1?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&h=600&fit=crop"
+                ]
             },
             {
                 "coordinates": "54°59'00.8\"N 24°00'02.9\"E",
                 "text": "Nevisai aisku ar parduoda. Yra miesto dujos, vanduo, kanalizacija",
                 "albumUrl": "https://photos.app.goo.gl/zBHYuC4uNXmu2JpW6",
-                "coverImageUrl": "https://photos.app.goo.gl/zBHYuC4uNXmu2JpW6",
-                "googleMapsUrl": "https://www.google.com/maps?q=54.983556,24.000806"
+                "googleMapsUrl": "https://www.google.com/maps?q=54.983556,24.000806",
+                "photos": [
+                    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600585152915-d208bec867a1?w=800&h=600&fit=crop"
+                ]
             },
             {
                 "coordinates": "54°58'57.7\"N 23°59'16.7\"E",
                 "text": "Obuoliu 11. Prie pat prudo. Senas murinis namas, restauruotas, bet prastom medziagom",
                 "albumUrl": "https://photos.app.goo.gl/LTyuKEFZyGRiCsc5A",
-                "coverImageUrl": "https://photos.app.goo.gl/LTyuKEFZyGRiCsc5A",
-                "googleMapsUrl": "https://www.google.com/maps?q=54.982694,23.987972"
+                "googleMapsUrl": "https://www.google.com/maps?q=54.982694,23.987972",
+                "photos": [
+                    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600585152915-d208bec867a1?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop"
+                ]
             },
             {
                 "coordinates": "54°58'54.3\"N 23°59'21.7\"E",
                 "text": "20K per viena sklypa nuo prudo. Stiprus nuolydis",
                 "albumUrl": "https://photos.app.goo.gl/it3Are9Y9vCmK3EU7",
-                "coverImageUrl": "https://photos.app.goo.gl/it3Are9Y9vCmK3EU7",
-                "googleMapsUrl": "https://www.google.com/maps?q=54.981750,23.989361"
+                "googleMapsUrl": "https://www.google.com/maps?q=54.981750,23.989361",
+                "photos": [
+                    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600585152915-d208bec867a1?w=800&h=600&fit=crop"
+                ]
             },
             {
                 "coordinates": "54°59'05.2\"N 24°00'19.2\"E",
                 "text": "50K us du sklypus po 6 Prie pagrindinio kelio. Yra dujos, vanduo, kanalizacija",
                 "albumUrl": "https://photos.app.goo.gl/K6GjvY6G8cW6zxEK9",
-                "coverImageUrl": "https://photos.app.goo.gl/K6GjvY6G8cW6zxEK9",
-                "googleMapsUrl": "https://www.google.com/maps?q=54.984778,24.005333"
+                "googleMapsUrl": "https://www.google.com/maps?q=54.984778,24.005333",
+                "photos": [
+                    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600585152915-d208bec867a1?w=800&h=600&fit=crop",
+                    "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&h=600&fit=crop"
+                ]
             }
         ];
         
@@ -438,11 +527,16 @@
             
             // Validate each location
             locations.forEach((location, index) => {
-                const required = ['coordinates', 'text', 'albumUrl', 'coverImageUrl', 'googleMapsUrl'];
+                const required = ['coordinates', 'text', 'albumUrl', 'googleMapsUrl', 'photos'];
                 for (const field of required) {
                     if (!(field in location)) {
                         throw new Error(`Missing field '${field}' in location ${index + 1}`);
                     }
+                }
+                
+                // Validate photos array
+                if (!Array.isArray(location.photos) || location.photos.length === 0) {
+                    throw new Error(`Invalid photos array in location ${index + 1}`);
                 }
                 
                 // Validate coordinates format and convert to decimal
@@ -522,17 +616,13 @@
             modalBody.innerHTML = `
                 <div class="location-text">${location.text}</div>
                 <div class="coordinates">${location.coordinates}</div>
-                <div class="google-photos-preview">
-                    <div class="photos-preview-content">
-                        <div class="photos-icon">📸</div>
-                        <h3>Google Photos Album</h3>
-                        <p>Click below to view all photos and videos in this album</p>
-                        <a href="${location.albumUrl}" target="_blank" class="preview-button">
-                            <span class="preview-icon">🔗</span>
-                            Open Album in Google Photos
-                        </a>
+                
+                <div id="gallery-container">
+                    <img id="modal-main-image" src="${location.photos[0]}" alt="Main gallery image">
+                    <div id="modal-thumbnails">
                     </div>
                 </div>
+                
                 <div class="action-buttons">
                     <a href="${location.albumUrl}" target="_blank" class="action-button album-button">
                         📸 View Full Album
@@ -542,6 +632,31 @@
                     </a>
                 </div>
             `;
+            
+            // Build thumbnails
+            const thumbnailsContainer = document.getElementById('modal-thumbnails');
+            location.photos.forEach((photoUrl, index) => {
+                const thumbnail = document.createElement('img');
+                thumbnail.src = photoUrl;
+                thumbnail.className = 'thumbnail';
+                thumbnail.alt = `Thumbnail ${index + 1}`;
+                
+                // Add click event listener
+                thumbnail.addEventListener('click', () => {
+                    document.getElementById('modal-main-image').src = photoUrl;
+                    // Update active thumbnail
+                    document.querySelectorAll('.thumbnail').forEach(thumb => thumb.classList.remove('active'));
+                    thumbnail.classList.add('active');
+                });
+                
+                // Set first thumbnail as active
+                if (index === 0) {
+                    thumbnail.classList.add('active');
+                }
+                
+                thumbnailsContainer.appendChild(thumbnail);
+            });
+            
             document.getElementById('modal').style.display = 'block';
         }
         
