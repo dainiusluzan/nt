@@ -157,19 +157,64 @@
             color: white;
         }
         
-        /* Google Photos Embed Styles */
-        .google-photos-embed {
-            margin: 15px 0;
-            border-radius: 8px;
+        /* Google Photos Preview Styles */
+        .google-photos-preview {
+            margin: 20px 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #e9ecef;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        .google-photos-embed iframe {
-            border: none;
+        .photos-preview-content {
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .photos-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .photos-preview-content h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .photos-preview-content p {
+            margin: 0 0 20px 0;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .preview-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #4285f4;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
             border-radius: 8px;
-            width: 100%;
-            height: 400px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+        }
+        
+        .preview-button:hover {
+            background: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
+        }
+        
+        .preview-icon {
+            font-size: 16px;
         }
         
         
@@ -226,8 +271,21 @@
                 font-size: 14px;
             }
             
-            .google-photos-embed iframe {
-                height: 300px;
+            .photos-preview-content {
+                padding: 20px;
+            }
+            
+            .photos-icon {
+                font-size: 36px;
+            }
+            
+            .photos-preview-content h3 {
+                font-size: 18px;
+            }
+            
+            .preview-button {
+                padding: 10px 20px;
+                font-size: 13px;
             }
             
         }
@@ -254,8 +312,25 @@
                 font-size: 13px;
             }
             
-            .google-photos-embed iframe {
-                height: 250px;
+            .photos-preview-content {
+                padding: 15px;
+            }
+            
+            .photos-icon {
+                font-size: 32px;
+            }
+            
+            .photos-preview-content h3 {
+                font-size: 16px;
+            }
+            
+            .photos-preview-content p {
+                font-size: 13px;
+            }
+            
+            .preview-button {
+                padding: 8px 16px;
+                font-size: 12px;
             }
             
             
@@ -447,14 +522,16 @@
             modalBody.innerHTML = `
                 <div class="location-text">${location.text}</div>
                 <div class="coordinates">${location.coordinates}</div>
-                <div class="google-photos-embed">
-                    <iframe 
-                        src="${location.albumUrl}" 
-                        width="100%" 
-                        height="400" 
-                        frameborder="0" 
-                        allowfullscreen>
-                    </iframe>
+                <div class="google-photos-preview">
+                    <div class="photos-preview-content">
+                        <div class="photos-icon">📸</div>
+                        <h3>Google Photos Album</h3>
+                        <p>Click below to view all photos and videos in this album</p>
+                        <a href="${location.albumUrl}" target="_blank" class="preview-button">
+                            <span class="preview-icon">🔗</span>
+                            Open Album in Google Photos
+                        </a>
+                    </div>
                 </div>
                 <div class="action-buttons">
                     <a href="${location.albumUrl}" target="_blank" class="action-button album-button">
